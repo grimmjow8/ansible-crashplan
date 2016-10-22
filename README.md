@@ -1,4 +1,4 @@
-## ansible-perl - [![Build Status](https://travis-ci.org/grimmjow8/ansible-crashplan.png)](https://travis-ci.org/grimmjow8/ansible-crashplan)
+## ansible-crashplan - [![Build Status](https://travis-ci.org/grimmjow8/ansible-crashplan.png)](https://travis-ci.org/grimmjow8/ansible-crashplan)
 
 Ansible role installs the CrashPlan Backup Software.
 
