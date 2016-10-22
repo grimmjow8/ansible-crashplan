@@ -1,0 +1,80 @@
+---
+# tasks file for ansible-crashplan
+- stat: path="{{__crashplan_install_exe}}"
+  register: cp_installed
+
+# install pip, required to install pexpect on node
+- name: install pip on node
+  apt: name={{item}} state=present
+  become: yes
+  with_items:
+    - python-pip 
+    - python-dev 
+    - git 
+    - python-setuptools 
+    - perl
+
+# install pexpect, required for cp installation
+- name: install pexpect
+  pip: name={{item}}
+  become: yes
+  with_items:
+    - pexpect
+
+- name: create download directory
+  file: path="{{__crashplan_dl_path}}" state=directory
+
+- name: download crashplan tarball
+  get_url:
+    url: "{{__crashplan_url}}"
+    dest: "{{__crashplan_dl_filename}}"
+  when: cp_installed.stat.exists == False
+
+- name: extract crashplan
+  unarchive: 
+    src: "{{__crashplan_dl_filename}}" 
+    dest: "{{__crashplan_dl_path}}"
+    copy: no
+    remote_src: yes
+  when: cp_installed.stat.exists == False
+
+# TODO - figure out why dl+extract not working, generated url incorrect
+# - name: download and extract crashplan
+#   unarchive: src={{__crashplan_url}} dest={{__crashplan_dl_path}} remote_src=yes
+#   when: cp_installed.stat.exists == False
+
+- name: install crashplan
+  become: yes
+  expect: 
+    command: "{{__crashplan_install_script}}"
+    echo: yes
+    chdir: "{{__crashplan_install_dir}}"
+    timeout: 120
+    responses: 
+          'Press enter to*': "\n"
+          '--More--': "\n"
+          'Do you accept and agree to be bound by the EULA*': "yes\n"
+          'What parent directory do you wish to install': "\n"
+          'does not exist.': "\n"
+          'What directory do you wish': "\n"
+          'What directory contains your': "\n"
+          'Is this correct': "\n"
+          'Would you like to start CrashPlanDesktop*': "no\n"
+          'Press Enter to complete*': "\n"
+  when: cp_installed.stat.exists == False
+
+- name: restart crashplan engine
+  become: yes
+  command: /usr/local/crashplan/bin/CrashPlanEngine restart
+  when: cp_installed.stat.exists == False
+
+- debug: msg="TODO ansible restart not working, reboot node/manual restart works"
+# - name: verify crashplan engine is up
+#   become: yes
+#   expect: 
+#     command: /usr/local/crashplan/bin/CrashPlanEngine status
+#     echo: yes
+#     timeout: 120
+#     responses: 
+#           'CrashPlan Engine (pid *) is running.': "\n"
+#   when: cp_installed.stat.exists == False

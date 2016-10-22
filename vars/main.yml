@@ -1,0 +1,16 @@
+---
+# vars file for ansible-crashplan
+__crashplan_dl_path:      "{{ansible_env.HOME}}/Downloads"
+__crashplan_version:      "4.7.0"
+
+# other vars
+__crashplan_base_url:     "https://download.code42.com/installs/linux/install/CrashPlan"
+__crashplan_filename:     "CrashPlan_{{__crashplan_version}}_Linux.tgz"
+__crashplan_url:          "{{__crashplan_base_url}}/{{__crashplan_filename}}"
+__crashplan_dl_filename:  "{{__crashplan_dl_path}}/{{__crashplan_filename}}"
+
+__crashplan_install_path: "/usr/local/bin"
+__crashplan_install_exe:  "{{__crashplan_install_path}}/CrashPlanDesktop"
+
+__crashplan_install_dir:    "{{__crashplan_dl_path}}/crashplan-install"
+__crashplan_install_script: "{{__crashplan_install_dir}}/install.sh"
