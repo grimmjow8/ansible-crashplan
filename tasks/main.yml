@@ -28,6 +28,7 @@
   get_url:
     url: "{{__crashplan_url}}"
     dest: "{{__crashplan_dl_filename}}"
+    validate_certs: no
   when: cp_installed.stat.exists == False
 
 - name: extract crashplan
