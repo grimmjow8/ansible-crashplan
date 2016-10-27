@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
 
   boxes.each do |opts|
     config.vm.define opts[:name] do |c|
-      c.vm.box = opts[:os]
+      c.vm.box      = opts[:os]
       c.vm.hostname = opts[:name]
 
       # set memory for vms
