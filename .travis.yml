@@ -11,6 +11,9 @@ matrix:
       dist: jessie64
       sudo: required
 
+# Use the new container infrastructure
+sudo: required
+
 # Install ansible
 addons:
   apt:
