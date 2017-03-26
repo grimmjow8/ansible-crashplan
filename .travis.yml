@@ -8,7 +8,13 @@ matrix:
       dist: trusty
       sudo: required
     - os: linux
-      dist: jessie64
+      dist: jessie
+      sudo: required
+    - os: linux
+      dist: xenial
+      sudo: required
+    - os: linux
+      dist: precise
       sudo: required
 
 # Use the new container infrastructure
