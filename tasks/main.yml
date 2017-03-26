@@ -35,7 +35,6 @@
   unarchive: 
     src: "{{__crashplan_dl_filename}}" 
     dest: "{{__crashplan_dl_path}}"
-    copy: no
     remote_src: yes
   when: cp_installed.stat.exists == False
 
